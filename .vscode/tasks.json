@@ -6,9 +6,9 @@
       "type": "shell",
       "command": "g++",
       "args": [
-        "main.cpp",
+        "${workspaceFolder}/*.cpp",
         "-o",
-        "main.exe",
+        "${workspaceFolder}/main.exe",
         "-IC:/raylib/include",
         "-LC:/raylib/lib",
         "-lraylib",
