@@ -1,3 +1,5 @@
+ 
+===== game.cpp ===== 
 #include "game.h"
 #include <fstream>
 
@@ -239,4 +241,210 @@ void Game::SaveBestTime() {
             file.close();
         }
     }
+} 
+===== main.cpp ===== 
+#include "raylib.h"
+#include "game.h"
+
+int main() {
+    const int screenWidth = 1280;
+    const int screenHeight = 720;
+
+    InitWindow(screenWidth, screenHeight, "Karachi Tales: Rush Hour");
+    SetTargetFPS(60);
+
+    Game game(screenWidth, screenHeight);
+
+    while (!WindowShouldClose()) {
+        game.Update();
+        game.Draw(screenWidth, screenHeight);
+    }
+
+    // game destructor automatically cleans up when it goes out of scope!
+    CloseWindow();
+    return 0;
+} 
+===== obstacle.cpp ===== 
+#include "obstacle.h"
+
+// Base Obstacle Constructor
+Obstacle::Obstacle(Texture2D tex, float x, float y, float size, float s) 
+    : texture(tex), speed(s), active(true) {
+    rect = { x, y, size, size };
 }
+
+void Obstacle::draw() {
+    DrawTexture(texture, (int)rect.x, (int)rect.y, WHITE);
+}
+
+// Hazard Update
+void Hazard::update(float dt) {
+    rect.y += speed * dt;
+    if (rect.y > 180) active = false;
+}
+
+// Vehicle Update
+void Vehicle::update(float dt) {
+    rect.y += speed * dt;
+    // Vehicles can go off the bottom OR the top if they are slow
+    if (rect.y > 200 || rect.y < -100) active = false;
+}
+
+Rectangle Obstacle::getRect() { 
+        return rect; 
+    } 
+===== player.cpp ===== 
+#include "player.h"
+
+Player::Player(float virtualWidth, float virtualHeight) {
+    x = virtualWidth / 2.0f;
+    y = virtualHeight - 60;
+    speed = 150.0f;
+}
+
+Player::~Player() {
+    // ❌ removed texture unloading (handled by Game)
+}
+
+void Player::moveLeft(float dt) {
+    x -= speed * dt;
+
+    const float LEFT_BOUND = 61 + 16; // ✅ clean boundary
+    if (x < LEFT_BOUND) x = LEFT_BOUND;
+}
+
+void Player::moveRight(float dt) {
+    x += speed * dt;
+
+    const float RIGHT_BOUND = 230 - 16; // ✅ clean boundary
+    if (x > RIGHT_BOUND) x = RIGHT_BOUND;
+}
+
+void Player::draw() {
+    DrawTexture(texture, (int)x - 16, (int)y, WHITE);
+}
+
+Rectangle Player::getRect() {
+    return { x - 8, y + 5, 16, 40 };
+} 
+===== game.h ===== 
+#pragma once
+#include "raylib.h"
+#include "player.h"
+#include "obstacle.h"
+#include <vector>
+
+class Game {
+private:
+    // Virtual Canvas & Resolution
+    RenderTexture2D target;
+    const int vWidth = 320;
+    const int vHeight = 180;
+
+    // ✅ NEW: Layout constants (replacing magic numbers)
+    const int ROAD_LEFT = 61;
+    const int ROAD_RIGHT = 230;
+
+    // Assets
+    Texture2D roadTex;
+    Texture2D potholeTex;
+    Texture2D manholeTex;
+    Texture2D rickshawTex;
+    Texture2D carTex;
+    Texture2D heartTex;
+    Texture2D chappalTex;
+    Texture2D bikerTex; // ✅ moved from Player
+
+    // Game Objects
+    Player player;
+    std::vector<Obstacle*> obstacles;
+
+    // State Variables
+    float scrollingBack = 0;
+    float scrollSpeed = 120.0f;
+    float spawnTimer = 0;
+    float spawnInterval = 1.5f;
+
+    // Game Logic Variables
+    bool gameOver = false;
+    bool gameWon = false;
+    float gameTimer = 120.0f; 
+    int lives = 5;
+    float distance = 0;
+    float targetDistance = 50.0f; 
+    int endState = 0;
+    
+    // UI & Persistence
+    float chappalRotation = 0.0f;
+    float bestTime = 999.0f;
+
+    void SpawnObstacle();
+    void DrawUI();
+    void LoadBestTime();
+    void SaveBestTime();
+
+public:
+    Game(int screenWidth, int screenHeight);
+    ~Game(); 
+
+    void Update();
+    void Draw(int screenWidth, int screenHeight);
+}; 
+===== obstacle.h ===== 
+#pragma once
+#include "raylib.h"
+
+// --- BASE CLASS ---
+class Obstacle {
+protected:
+    Texture2D texture;
+    Rectangle rect;
+    float speed;
+
+public:
+    bool active;
+    Obstacle(Texture2D tex, float x, float y, float size, float s);
+    virtual ~Obstacle() {} // Required for OOP inheritance
+
+    virtual void update(float dt) = 0; // Pure virtual = Abstract class
+    virtual void draw();
+
+    Rectangle getRect();
+};
+
+// --- CHILD CLASS 1: Static Hazards ---
+class Hazard : public Obstacle {
+public:
+    // This tells Hazard to use the Obstacle constructor
+    Hazard(Texture2D tex, float x, float y, float size, float s) : Obstacle(tex, x, y, size, s) {}
+    
+    void update(float dt) override;
+};
+
+// --- CHILD CLASS 2: Moving Vehicles ---
+class Vehicle : public Obstacle {
+public:
+    Vehicle(Texture2D tex, float x, float y, float size, float roadSpeed, float extraSpeed) 
+        : Obstacle(tex, x, y, size, roadSpeed + extraSpeed) {}
+    
+    void update(float dt) override;
+}; 
+===== player.h ===== 
+#pragma once
+#include "raylib.h"
+
+class Player {
+public:
+    float x, y;
+    float speed;
+    Texture2D texture; // now assigned externally
+
+    Player(float virtualWidth, float virtualHeight);
+    ~Player();
+    
+    void draw();
+    void moveLeft(float dt);
+    void moveRight(float dt);
+
+    Rectangle getRect();
+}; 

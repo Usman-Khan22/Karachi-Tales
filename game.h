@@ -11,6 +11,10 @@ private:
     const int vWidth = 320;
     const int vHeight = 180;
 
+    // ✅ NEW: Layout constants (replacing magic numbers)
+    const int ROAD_LEFT = 61;
+    const int ROAD_RIGHT = 230;
+
     // Assets
     Texture2D roadTex;
     Texture2D potholeTex;
@@ -19,6 +23,7 @@ private:
     Texture2D carTex;
     Texture2D heartTex;
     Texture2D chappalTex;
+    Texture2D bikerTex; // ✅ moved from Player
 
     // Game Objects
     Player player;
@@ -29,28 +34,29 @@ private:
     float scrollSpeed = 120.0f;
     float spawnTimer = 0;
     float spawnInterval = 1.5f;
-    int ammiAnger = 0;
-    const int maxAnger = 5; // 5 hits and game over!
-    bool gameOver = false;
-    float gameTimer = 120.0f; // 2 minutes in seconds
-    int lives = 5;
-    float targetDistance = 50.0f; // Goal: 50km
-    float distance = 0;
-    bool gameWon = false;
-    int endState = 0; // 0: Playing, 1: Wasted (Crash), 2: Chappal (Time Out), 3: Win
-    // Inside private section of game.h
-    float chappalRotation = 0.0f;
 
-    // Private helper methods
+    // Game Logic Variables
+    bool gameOver = false;
+    bool gameWon = false;
+    float gameTimer = 120.0f; 
+    int lives = 5;
+    float distance = 0;
+    float targetDistance = 50.0f; 
+    int endState = 0;
+    
+    // UI & Persistence
+    float chappalRotation = 0.0f;
+    float bestTime = 999.0f;
+
     void SpawnObstacle();
-    void HandleInput(float dt);
     void DrawUI();
+    void LoadBestTime();
+    void SaveBestTime();
 
 public:
     Game(int screenWidth, int screenHeight);
-    ~Game(); // Handles all UnloadTexture calls
+    ~Game(); 
 
-    bool IsRunning();
     void Update();
     void Draw(int screenWidth, int screenHeight);
 };
