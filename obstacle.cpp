@@ -24,5 +24,11 @@ void Vehicle::update(float dt) {
 }
 
 Rectangle Obstacle::getRect() { 
-        return rect; 
-    }
+    // Shrink by 4 pixels on each side (Total 8 pixels smaller)
+    return { 
+        rect.x + 4, 
+        rect.y + 4, 
+        rect.width - 8, 
+        rect.height - 8 
+    }; 
+}

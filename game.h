@@ -12,8 +12,8 @@ private:
     const int vHeight = 180;
 
     // ✅ NEW: Layout constants (replacing magic numbers)
-    const int ROAD_LEFT = 61;
-    const int ROAD_RIGHT = 230;
+    const int ROAD_LEFT = 45;
+    const int ROAD_RIGHT = 320 - 45;
 
     // Assets
     Texture2D roadTex;

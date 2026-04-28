@@ -44,13 +44,13 @@ Game::~Game() {
 }
 
 void Game::SpawnObstacle() {
-    float rx = (float)GetRandomValue(ROAD_LEFT, ROAD_RIGHT); // ✅ fixed
+    float rx = (float)GetRandomValue(ROAD_LEFT + 5, ROAD_RIGHT - 30); // ✅ fixed
     int type = GetRandomValue(0, 3);
 
-    if (type == 0)      obstacles.push_back(new Hazard(potholeTex, rx, -30, 24, scrollSpeed));
+    if (type == 0) obstacles.push_back(new Hazard(potholeTex, rx, -30, 24, scrollSpeed));
     else if (type == 1) obstacles.push_back(new Hazard(manholeTex, rx, -30, 32, scrollSpeed));
     else if (type == 2) obstacles.push_back(new Vehicle(rickshawTex, rx, -60, 32, scrollSpeed, 60.0f));
-    else                obstacles.push_back(new Vehicle(carTex, rx, -80, 32, scrollSpeed, -40.0f));
+    else obstacles.push_back(new Vehicle(carTex, rx, -80, 32, scrollSpeed, -40.0f));
 }
 
 void Game::Update() {
@@ -63,6 +63,8 @@ void Game::Update() {
             lives = 5;
             gameTimer = 120.0f;
             distance = 0;
+            spawnInterval = 1.5f; 
+            spawnTimer = 0.0f;
             gameOver = false;
             gameWon = false;
             endState = 0;
@@ -75,8 +77,9 @@ void Game::Update() {
 
     float dt = GetFrameTime();
 
-    // ✅ Dynamic spawn difficulty
-    spawnInterval = std::max(0.6f, 1.5f - distance * 0.02f);
+
+    spawnInterval = 1.5f - (distance * 0.02f); 
+    if (spawnInterval < 0.6f) spawnInterval = 0.6f;
 
     distance += (scrollSpeed * dt) / 100.0f; 
     if (distance >= targetDistance) {
