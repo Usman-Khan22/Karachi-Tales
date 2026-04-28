@@ -22,3 +22,7 @@ void Vehicle::update(float dt) {
     // Vehicles can go off the bottom OR the top if they are slow
     if (rect.y > 200 || rect.y < -100) active = false;
 }
+
+Rectangle Obstacle::getRect() { 
+        return rect; 
+    }

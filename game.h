@@ -17,6 +17,8 @@ private:
     Texture2D manholeTex;
     Texture2D rickshawTex;
     Texture2D carTex;
+    Texture2D heartTex;
+    Texture2D chappalTex;
 
     // Game Objects
     Player player;
@@ -27,10 +29,22 @@ private:
     float scrollSpeed = 120.0f;
     float spawnTimer = 0;
     float spawnInterval = 1.5f;
+    int ammiAnger = 0;
+    const int maxAnger = 5; // 5 hits and game over!
+    bool gameOver = false;
+    float gameTimer = 120.0f; // 2 minutes in seconds
+    int lives = 5;
+    float targetDistance = 50.0f; // Goal: 50km
+    float distance = 0;
+    bool gameWon = false;
+    int endState = 0; // 0: Playing, 1: Wasted (Crash), 2: Chappal (Time Out), 3: Win
+    // Inside private section of game.h
+    float chappalRotation = 0.0f;
 
     // Private helper methods
     void SpawnObstacle();
     void HandleInput(float dt);
+    void DrawUI();
 
 public:
     Game(int screenWidth, int screenHeight);

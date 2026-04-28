@@ -29,3 +29,9 @@ void Player::draw() {
     // Center the 32px texture on the X coordinate
     DrawTexture(texture, (int)x - 16, (int)y, WHITE);
 }
+
+Rectangle Player::getRect() {
+        // x-8 and width 16 makes the hitbox perfectly centered on the bike's body, 
+        // ignoring the wide handles.
+        return { x - 8, y + 5, 16, 40 }; 
+    }

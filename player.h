@@ -15,4 +15,6 @@ public:
     // Updated movement functions
     void moveLeft(float dt);
     void moveRight(float dt);
+
+    Rectangle getRect();
 };

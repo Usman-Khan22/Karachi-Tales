@@ -15,6 +15,8 @@ public:
 
     virtual void update(float dt) = 0; // Pure virtual = Abstract class
     virtual void draw();
+
+    Rectangle getRect();
 };
 
 // --- CHILD CLASS 1: Static Hazards ---
