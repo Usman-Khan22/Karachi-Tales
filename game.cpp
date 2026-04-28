@@ -27,10 +27,10 @@ void Game::SpawnObstacle() {
     float rx = (float)GetRandomValue(61, 230);
     int type = GetRandomValue(0, 3);
 
-    if (type == 0)      obstacles.push_back(new Hazard(potholeTex, rx, -30, 24, scrollSpeed));
+    if (type == 0) obstacles.push_back(new Hazard(potholeTex, rx, -30, 24, scrollSpeed));
     else if (type == 1) obstacles.push_back(new Hazard(manholeTex, rx, -30, 32, scrollSpeed));
     else if (type == 2) obstacles.push_back(new Vehicle(rickshawTex, rx, -60, 32, scrollSpeed, 60.0f)); // Fast!
-    else                obstacles.push_back(new Vehicle(carTex, rx, -80, 32, scrollSpeed, -40.0f)); // Slow traffic
+    else obstacles.push_back(new Vehicle(carTex, rx, -80, 32, scrollSpeed, -40.0f)); // Slow traffic
 }
 
 void Game::Update() {
