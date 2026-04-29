@@ -7,7 +7,7 @@ int main() {
 
     InitWindow(screenWidth, screenHeight, "Karachi Tales: Rush Hour");
     SetTargetFPS(60);
-
+    SetExitKey(KEY_ESCAPE);
     Game game(screenWidth, screenHeight);
 
     while (!WindowShouldClose()) {

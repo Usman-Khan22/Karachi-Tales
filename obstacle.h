@@ -15,8 +15,8 @@ public:
 
     virtual void update(float dt) = 0; // Pure virtual = Abstract class
     virtual void draw();
-
-    Rectangle getRect();
+    virtual Rectangle getRect();
+    
 };
 
 // --- CHILD CLASS 1: Static Hazards ---
@@ -35,4 +35,5 @@ public:
         : Obstacle(tex, x, y, size, roadSpeed + extraSpeed) {}
     
     void update(float dt) override;
+    Rectangle getRect() override;
 };

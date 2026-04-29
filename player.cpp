@@ -27,5 +27,18 @@ void Player::draw() {
 }
 
 Rectangle Player::getRect() {
-    return { x - 8, y + 5, 16, 40 }; 
+    // x - 12 (instead of 8) makes the biker "wider" to the physics engine
+    // width 24 (instead of 16) matches the visual width better
+    return { x - 12, y + 5, 24, 40 }; 
+}
+
+void Player::operator--() {
+    if (lives > 0) lives--;
+    // You could even trigger a sound effect or flash red here
+}
+
+void ApplyEmergencyRepairs(Player& p) {
+    // Because it's a friend, it can access 'p.lives' directly
+    // even though 'lives' is private!
+    p.lives = 5; 
 }

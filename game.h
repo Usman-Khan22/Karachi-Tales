@@ -31,18 +31,20 @@ private:
 
     // State Variables
     float scrollingBack = 0;
-    float scrollSpeed = 120.0f;
+    float scrollSpeed = 140.0f;
     float spawnTimer = 0;
     float spawnInterval = 1.5f;
-
+    
     // Game Logic Variables
     bool gameOver = false;
     bool gameWon = false;
-    float gameTimer = 120.0f; 
+    float gameTimer = 100.0f; 
     int lives = 5;
     float distance = 0;
-    float targetDistance = 50.0f; 
+    float targetDistance = 100.0f; 
     int endState = 0;
+    bool showAmmiWarning = false;
+    float warningTimer = 0.0f; // To make the warning flash or disappear
     
     // UI & Persistence
     float chappalRotation = 0.0f;
