@@ -174,13 +174,6 @@ void Game::Draw(int screenWidth, int screenHeight) {
         (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height },
         (Rectangle){ 0, 0, (float)screenWidth, (float)screenHeight },
         (Vector2){ 0, 0 }, 0.0f, WHITE);
-
-        for (auto obs : obstacles) {
-            obs->draw();
-            // Draw a thin red lines around the hitboxes for debugging
-            DrawRectangleLinesEx(obs->getRect(), 1, RED); 
-        }
-        DrawRectangleLinesEx(player.getRect(), 1, GREEN);
     EndDrawing();
     }
     
