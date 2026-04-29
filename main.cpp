@@ -15,7 +15,6 @@ int main() {
         game.Draw(screenWidth, screenHeight);
     }
 
-    // game destructor automatically cleans up when it goes out of scope!
     CloseWindow();
     return 0;
 }

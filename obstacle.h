@@ -1,7 +1,6 @@
 #pragma once
 #include "raylib.h"
 
-// --- BASE CLASS ---
 class Obstacle {
 protected:
     Texture2D texture;
@@ -11,24 +10,21 @@ protected:
 public:
     bool active;
     Obstacle(Texture2D tex, float x, float y, float size, float s);
-    virtual ~Obstacle() {} // Required for OOP inheritance
+    virtual ~Obstacle() {} 
 
-    virtual void update(float dt) = 0; // Pure virtual = Abstract class
+    virtual void update(float dt) = 0;
     virtual void draw();
     virtual Rectangle getRect();
     
 };
 
-// --- CHILD CLASS 1: Static Hazards ---
 class Hazard : public Obstacle {
 public:
-    // This tells Hazard to use the Obstacle constructor
     Hazard(Texture2D tex, float x, float y, float size, float s) : Obstacle(tex, x, y, size, s) {}
     
     void update(float dt) override;
 };
 
-// --- CHILD CLASS 2: Moving Vehicles ---
 class Vehicle : public Obstacle {
 public:
     Vehicle(Texture2D tex, float x, float y, float size, float roadSpeed, float extraSpeed) 
